@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildingSlot : MonoBehaviour
 {
     private GameSystem theGameSystem;
 
     private BoxCollider triggerColider;
-    [SerializeField] private Canvas buildButton;
+    [SerializeField] private Button buildButton;
+    [SerializeField] private Button infoButton;
 
     private Building building;
     private bool hasBuilding;
@@ -37,11 +40,25 @@ public class BuildingSlot : MonoBehaviour
         }
     }
 
+    public void OnInfoButtonPressed()
+    {
+        if (isPlayerInCollision)
+        {
+            theGameSystem.ShowBuildngInfoScreen(building);
+        }
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player" && !hasBuilding)
         {
             buildButton.gameObject.SetActive(true);
+            isPlayerInCollision = true;
+        }
+
+        if (other.tag == "Player" && hasBuilding)
+        {
+            infoButton.gameObject.SetActive(true);
             isPlayerInCollision = true;
         }
     }
@@ -51,9 +68,11 @@ public class BuildingSlot : MonoBehaviour
         if (other.tag == "Player")
         {
             buildButton.gameObject.SetActive(false);
+            infoButton.gameObject.SetActive(false);
             isPlayerInCollision = false;
 
             theGameSystem.HideBuildMenu();
+            theGameSystem.HideBuildingInfoScreen();
         }
     }
 

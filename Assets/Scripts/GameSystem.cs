@@ -26,6 +26,8 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private Button buildingButtonPrefab;
     [SerializeField] private RectTransform buildingsContainer;
 
+    [SerializeField] private BuildingInfoScreen buildingInfoScreen;
+
     private bool MonthlyTickHappened;
 
     // Start is called before the first frame update
@@ -35,6 +37,17 @@ public class GameSystem : MonoBehaviour
         money = 100;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
         StartCoroutine(TimePassingCoroutine());
+    }
+
+    public void ShowBuildngInfoScreen(Building building)
+    {
+        buildingInfoScreen.gameObject.SetActive(true);
+        buildingInfoScreen.GetBuildingInfo(building);
+    }
+
+    public void HideBuildingInfoScreen()
+    {
+        buildingInfoScreen.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

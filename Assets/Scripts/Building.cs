@@ -9,4 +9,9 @@ public class Building : MonoBehaviour
     public int buildingCost = 50;
     public int monthlyUpkeep = 10;
     public Sprite buildingIcon;
+
+    public string materialConsumed;
+    public int materialConsumedAmount;
+
+    public string productProduced;
 }

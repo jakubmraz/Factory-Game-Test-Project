@@ -210,6 +210,9 @@ MonoBehaviour:
   buildingCost: 50
   monthlyUpkeep: 10
   buildingIcon: {fileID: 21300000, guid: 0169bf99917242648a402030e96bfe3a, type: 3}
+  materialConsumed: Plastic
+  materialConsumedAmount: 10
+  productProduced: Fleece Jacket
 --- !u!1 &6176197387214742050
 GameObject:
   m_ObjectHideFlags: 0
