@@ -15,10 +15,16 @@ public class GameSystem : MonoBehaviour
 
     public DateTime gameTime;
 
+    [SerializeField] private List<Building> buildingPrefabs;
+
     [SerializeField] private Text plasticUI;
     [SerializeField] private Text timeUI;
     [SerializeField] private Text fleeceJacketUI;
     [SerializeField] private Text moneyUI;
+
+    [SerializeField] private RectTransform buildMenu;
+    [SerializeField] private Button buildingButtonPrefab;
+    [SerializeField] private RectTransform buildingsContainer;
 
     private bool MonthlyTickHappened;
 
@@ -87,6 +93,40 @@ public class GameSystem : MonoBehaviour
         foreach (var building in buildings)
         {
             money -= building.monthlyUpkeep;
+        }
+    }
+
+    public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
+    {
+        FillBuildingUI(slotBeingStoodIn);
+        buildMenu.gameObject.SetActive(true);
+    }
+
+    public void HideBuildMenu()
+    {
+        buildMenu.gameObject.SetActive(false);
+        FlushBuildingUI();
+    }
+
+    private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
+    {
+        //Don't ask me about the x and y coordinates, I have no idea, it just works
+        int posY = 250;
+
+        foreach (var building in buildingPrefabs)
+        {
+            BuildButton newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(420, posY), Quaternion.identity, buildingsContainer).GetComponent<BuildButton>();
+            newBuildingButton.AssignBuildingToButton(building, slotBeingStoodIn);
+
+            posY -= 60;
+        }
+    }
+
+    private void FlushBuildingUI()
+    {
+        foreach (Transform child in buildingsContainer)
+        {
+            Destroy(child.gameObject);
         }
     }
 }

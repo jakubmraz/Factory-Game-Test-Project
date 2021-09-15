@@ -26,31 +26,14 @@ public class BuildingSlot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    public void OnBuildButtonPressed()
+    {
         if (isPlayerInCollision)
         {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                //Show building selection menu
-
-                //On selection, check selected building's price and paste here instead of the static 50
-                if(theGameSystem.money >= 50){
-                    theGameSystem.money -= 50;
-                    building = Instantiate(plasticPlant, transform);
-                    theGameSystem.buildings.Add(building);
-                }
-            }
-
-            if (Input.GetButtonDown("Fire2"))
-            {
-                //Show building selection menu
-
-                //On selection, check selected building's price and paste here instead of the static 50
-                if (theGameSystem.money >= 50)
-                {
-                    theGameSystem.money -= 50;
-                    building = Instantiate(sellingBuilding, transform);
-                }
-            }
+            theGameSystem.ShowBuildMenu(this);
         }
     }
 
@@ -69,6 +52,22 @@ public class BuildingSlot : MonoBehaviour
         {
             buildButton.gameObject.SetActive(false);
             isPlayerInCollision = false;
+
+            theGameSystem.HideBuildMenu();
+        }
+    }
+
+    public void BuildBuilding(Building building)
+    {
+        if (theGameSystem.money >= building.buildingCost)
+        {
+            theGameSystem.money -= building.buildingCost;
+            this.building = Instantiate(building, transform);
+            theGameSystem.buildings.Add(building);
+
+            hasBuilding = true;
+            buildButton.gameObject.SetActive(false);
+            theGameSystem.HideBuildMenu();
         }
     }
 }
