@@ -8,7 +8,6 @@ public class BuildingSlot : MonoBehaviour
 {
     private GameSystem theGameSystem;
 
-    private BoxCollider triggerColider;
     [SerializeField] private Button buildButton;
     [SerializeField] private Button infoButton;
 
@@ -18,12 +17,12 @@ public class BuildingSlot : MonoBehaviour
 
     [SerializeField] private Building plasticPlant;
     [SerializeField] private Building sellingBuilding;
+    [SerializeField] private Building garageBuilding;
 
     // Start is called before the first frame update
     void Awake()
     {
         theGameSystem = GameObject.FindObjectOfType<GameSystem>();
-        triggerColider = GetComponent<BoxCollider>();
     }
 
     // Update is called once per frame

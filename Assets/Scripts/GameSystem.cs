@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class GameSystem : MonoBehaviour
 {
+    private City theCity;
     public int money;
 
     public int plasticWaste;
@@ -27,14 +28,18 @@ public class GameSystem : MonoBehaviour
     [SerializeField] private RectTransform buildingsContainer;
 
     [SerializeField] private BuildingInfoScreen buildingInfoScreen;
+    [SerializeField] private CityInfoScreen cityInfoScreen;
+    [SerializeField] private CampaignInfoScreen campaignInfoScreen;
 
-    private bool MonthlyTickHappened;
+    private bool monthlyTickHappened;
+    private bool dailyTickHappened;
 
     // Start is called before the first frame update
     void Start()
     {
+        theCity = GetComponent<City>();
         buildings = new List<Building>();
-        money = 100;
+        money = 500;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
         StartCoroutine(TimePassingCoroutine());
     }
@@ -67,38 +72,69 @@ public class GameSystem : MonoBehaviour
             {
                 StartCoroutine(MonthlyTickCoroutine());
             }
+            if (gameTime.Hour == 0)
+            {
+                StartCoroutine(DailyTickCoroutine());
+            }
             yield return new WaitForSeconds(1f);
         }
     }
 
     IEnumerator MonthlyTickCoroutine()
     {
-        if (!MonthlyTickHappened)
+        if (!monthlyTickHappened)
         {
             MonthlyTick();
-            MonthlyTickHappened = true;
+            monthlyTickHappened = true;
         }
         else
         {
             yield break;
         }
         
-        while (gameTime.Day == 1 && MonthlyTickHappened)
+        while (gameTime.Day == 1 && monthlyTickHappened)
         {
             yield return new WaitForSeconds(5f);
         }
 
-        MonthlyTickHappened = false;
+        monthlyTickHappened = false;
+    }
+
+    IEnumerator DailyTickCoroutine()
+    {
+        if (!dailyTickHappened)
+        {
+            DailyTick();
+            dailyTickHappened = true;
+        }
+        else
+        {
+            yield break;
+        }
+
+        while (gameTime.Hour == 0 && dailyTickHappened)
+        {
+            yield return new WaitForSeconds(5f);
+        }
+
+        dailyTickHappened = false;
     }
 
     void HourTick()
     {
-        plasticWaste++;
+        //plasticWaste++;
+        cityInfoScreen.GetCityInfo(theCity);
 
         plasticUI.text = "Plastic: " + plasticWaste;
         fleeceJacketUI.text = "Fleece Jackets: " + fleeceJackets;
         timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
         moneyUI.text = "Money: " + money + "$";
+    }
+
+    void DailyTick()
+    {
+        theCity.Pollute();
+        cityInfoScreen.GetCityInfo(theCity);
     }
 
     void MonthlyTick()
@@ -121,6 +157,27 @@ public class GameSystem : MonoBehaviour
         FlushBuildingUI();
     }
 
+    public void ShowCityInfo()
+    {
+        cityInfoScreen.gameObject.SetActive(true);
+        cityInfoScreen.GetCityInfo(theCity);
+    }
+
+    public void HideCityInfo()
+    {
+        cityInfoScreen.gameObject.SetActive(false);
+    }
+
+    public void ShowCampaignInfo()
+    {
+        campaignInfoScreen.gameObject.SetActive(true);
+    }
+
+    public void HideCampaignInfo()
+    {
+        campaignInfoScreen.gameObject.SetActive(false);
+    }
+
     private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
     {
         //Don't ask me about the x and y coordinates, I have no idea, it just works
@@ -128,7 +185,7 @@ public class GameSystem : MonoBehaviour
 
         foreach (var building in buildingPrefabs)
         {
-            BuildButton newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(420, posY), Quaternion.identity, buildingsContainer).GetComponent<BuildButton>();
+            BuildButton newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(345, posY), Quaternion.identity, buildingsContainer).GetComponent<BuildButton>();
             newBuildingButton.AssignBuildingToButton(building, slotBeingStoodIn);
 
             posY -= 60;
