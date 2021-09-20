@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class GameSystem : MonoBehaviour
 {
     private City theCity;
+    public Campaign theCampaign;
+
     public int money;
 
     public int plasticWaste;
@@ -37,28 +39,27 @@ public class GameSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        theCampaign = gameObject.AddComponent<Campaign>();
+        theCampaign.MainGoal = new Goal()
+        {
+            pollutionGoal = 10
+        };
+        theCampaign.TimeLimit = new DateTime(2020, 1, 1);
+        theCampaign.SideGoals = new List<Goal>()
+        {
+            new Goal()
+            {
+                ecoAwarenessGoal = 60,
+                rewardType = "Money",
+                rewardValue = 1000
+            }
+        };
+
         theCity = GetComponent<City>();
         buildings = new List<Building>();
         money = 500;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
         StartCoroutine(TimePassingCoroutine());
-    }
-
-    public void ShowBuildngInfoScreen(Building building)
-    {
-        buildingInfoScreen.gameObject.SetActive(true);
-        buildingInfoScreen.GetBuildingInfo(building);
-    }
-
-    public void HideBuildingInfoScreen()
-    {
-        buildingInfoScreen.gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
     }
 
     IEnumerator TimePassingCoroutine()
@@ -134,7 +135,9 @@ public class GameSystem : MonoBehaviour
     void DailyTick()
     {
         theCity.Pollute();
+        CheckCampaignGoals();
         cityInfoScreen.GetCityInfo(theCity);
+        campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
     }
 
     void MonthlyTick()
@@ -143,6 +146,43 @@ public class GameSystem : MonoBehaviour
         {
             money -= building.monthlyUpkeep;
         }
+    }
+
+    void CheckCampaignGoals()
+    {
+        foreach (var sideGoal in theCampaign.SideGoals)
+        {
+            if (sideGoal.CheckGoalCompletion(theCity))
+            {
+                switch (sideGoal.rewardType)
+                {
+                    case "Money":
+                        money += sideGoal.rewardValue;
+                        break;
+                }
+            }
+        }
+
+        if (theCampaign.MainGoal.CheckGoalCompletion(theCity))
+        {
+            Win();
+        }
+    }
+
+    private void Win()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ShowBuildngInfoScreen(Building building)
+    {
+        buildingInfoScreen.gameObject.SetActive(true);
+        buildingInfoScreen.GetBuildingInfo(building);
+    }
+
+    public void HideBuildingInfoScreen()
+    {
+        buildingInfoScreen.gameObject.SetActive(false);
     }
 
     public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
@@ -171,6 +211,7 @@ public class GameSystem : MonoBehaviour
     public void ShowCampaignInfo()
     {
         campaignInfoScreen.gameObject.SetActive(true);
+        campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
     }
 
     public void HideCampaignInfo()

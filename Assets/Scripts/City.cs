@@ -8,7 +8,7 @@ public class City : MonoBehaviour
 {
     public string Name;
     public int Population;
-    public int EcoAwareness;
+    public float EcoAwareness;
     public int DailyPlastic;
     public int TotalPlastic;
 
@@ -58,7 +58,8 @@ public class City : MonoBehaviour
         //so the entire city doesn't produce the max amount on an unlucky day
         for (int i = 0; i < 10; i++)
         {
-            dailyPlastic += Population / 10 * Random.Range(1, 5) * EcoAwareness / 2 / 100;
+            float dailyPlasticTemp = Population / 10 * Random.Range(1, 5) * EcoAwareness / 2 / 100;
+            dailyPlastic += Convert.ToInt32(dailyPlasticTemp);
         }
 
         DailyPlastic = dailyPlastic;

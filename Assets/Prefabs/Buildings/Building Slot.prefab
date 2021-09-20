@@ -276,6 +276,8 @@ MonoBehaviour:
     type: 3}
   sellingBuilding: {fileID: 5063987843548259199, guid: 17d08316f7bc9c94b97ad1aa4030643b,
     type: 3}
+  garageBuilding: {fileID: 2752429770442585639, guid: 02674822d344cc646ae10fe4bd08120a,
+    type: 3}
 --- !u!1 &873261571138471251
 GameObject:
   m_ObjectHideFlags: 0

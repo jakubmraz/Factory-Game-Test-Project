@@ -23,6 +23,5 @@ public class SellingBuilding : Building
             }
             yield return new WaitForSeconds(5f);
         }
-
     }
 }
