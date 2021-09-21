@@ -221,15 +221,15 @@ public class GameSystem : MonoBehaviour
 
     private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
     {
-        //Don't ask me about the x and y coordinates, I have no idea, it just works
-        int posY = 250;
+        int posY = -40;
 
         foreach (var building in buildingPrefabs)
         {
-            BuildButton newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(345, posY), Quaternion.identity, buildingsContainer).GetComponent<BuildButton>();
-            newBuildingButton.AssignBuildingToButton(building, slotBeingStoodIn);
+            Transform newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(0, posY), Quaternion.identity).GetComponent<Transform>();
+            newBuildingButton.SetParent(buildingsContainer, false);
+            newBuildingButton.GetComponent<BuildButton>().AssignBuildingToButton(building, slotBeingStoodIn);
 
-            posY -= 60;
+            posY -= 70;
         }
     }
 
