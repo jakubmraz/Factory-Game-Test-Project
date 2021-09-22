@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class GameSystem : MonoBehaviour
 {
     private City theCity;
-    public Campaign theCampaign;
+    private Campaign theCampaign;
     private UI theUI;
+    [SerializeField] private Player thePlayer;
 
     public int money;
 
@@ -18,21 +19,8 @@ public class GameSystem : MonoBehaviour
     public List<Building> buildings;
 
     public DateTime gameTime;
-
-    //[SerializeField] private List<Building> buildingPrefabs;
-
-    //[SerializeField] private Text plasticUI;
-    //[SerializeField] private Text timeUI;
-    //[SerializeField] private Text fleeceJacketUI;
-    //[SerializeField] private Text moneyUI;
-
-    //[SerializeField] private RectTransform buildMenu;
-    //[SerializeField] private Button buildingButtonPrefab;
-    //[SerializeField] private RectTransform buildingsContainer;
-
-    //[SerializeField] private BuildingInfoScreen buildingInfoScreen;
-    //[SerializeField] private CityInfoScreen cityInfoScreen;
-    //[SerializeField] private CampaignInfoScreen campaignInfoScreen;
+    public int gameSpeed;
+    public bool gamePaused;
 
     private bool monthlyTickHappened;
     private bool dailyTickHappened;
@@ -59,16 +47,23 @@ public class GameSystem : MonoBehaviour
         theUI = GetComponent<UI>();
         theCity = GetComponent<City>();
         buildings = new List<Building>();
+
         money = 500;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
+        gameSpeed = 1;
+
         StartCoroutine(TimePassingCoroutine());
     }
 
     IEnumerator TimePassingCoroutine()
     {
         while(true){
+            while (gamePaused)
+            {
+                yield return new WaitForSeconds(.33f);
+            }
+
             gameTime = gameTime.AddHours(1);
-            //gameTime = gameTime.AddDays(1);
             HourTick();
 
             if (gameTime.Day == 1)
@@ -79,7 +74,21 @@ public class GameSystem : MonoBehaviour
             {
                 StartCoroutine(DailyTickCoroutine());
             }
-            yield return new WaitForSeconds(1f);
+
+            float actualSpeed = 1f;
+            switch (gameSpeed)
+            {
+                case 1:
+                    actualSpeed = 1f;
+                    break;
+                case 2:
+                    actualSpeed = .66f;
+                    break;
+                case 3:
+                    actualSpeed = .33f;
+                    break;
+            }
+            yield return new WaitForSeconds(actualSpeed);
         }
     }
 
@@ -126,21 +135,12 @@ public class GameSystem : MonoBehaviour
     void HourTick()
     {
         theUI.UpdateUI();
-        //plasticWaste++;
-        //cityInfoScreen.GetCityInfo(theCity);
-
-        //plasticUI.text = "Plastic: " + plasticWaste;
-        //fleeceJacketUI.text = "Fleece Jackets: " + fleeceJackets;
-        //timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
-        //moneyUI.text = "Money: " + money + "$";
     }
 
     void DailyTick()
     {
         theCity.Pollute();
         CheckCampaignGoals();
-        //cityInfoScreen.GetCityInfo(theCity);
-        //campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
     }
 
     void MonthlyTick()
@@ -149,6 +149,36 @@ public class GameSystem : MonoBehaviour
         {
             money -= building.monthlyUpkeep;
         }
+    }
+
+    public void RaiseGameSpeed()
+    {
+        if (gameSpeed < 3)
+            gameSpeed++;
+
+        theUI.UpdateGameSpeedIcon(gameSpeed);
+    }
+
+    public void LowerGameSpeed()
+    {
+        if (gameSpeed > 1)
+            gameSpeed--;
+
+        theUI.UpdateGameSpeedIcon(gameSpeed);
+    }
+
+    public void PauseGame()
+    {
+        gamePaused = true;
+        thePlayer.PausePlayer();
+        theUI.SwitchPausePlayButtons();
+    }
+
+    public void UnpauseGame()
+    {
+        gamePaused = false;
+        thePlayer.UnpausePlayer();
+        theUI.SwitchPausePlayButtons();
     }
 
     void CheckCampaignGoals()
@@ -176,71 +206,4 @@ public class GameSystem : MonoBehaviour
     {
         throw new NotImplementedException();
     }
-
-    //public void ShowBuildngInfoScreen(Building building)
-    //{
-    //    buildingInfoScreen.gameObject.SetActive(true);
-    //    buildingInfoScreen.GetBuildingInfo(building);
-    //}
-
-    //public void HideBuildingInfoScreen()
-    //{
-    //    buildingInfoScreen.gameObject.SetActive(false);
-    //}
-
-    //public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
-    //{
-    //    FillBuildingUI(slotBeingStoodIn);
-    //    buildMenu.gameObject.SetActive(true);
-    //}
-
-    //public void HideBuildMenu()
-    //{
-    //    buildMenu.gameObject.SetActive(false);
-    //    FlushBuildingUI();
-    //}
-
-    //public void ShowCityInfo()
-    //{
-    //    cityInfoScreen.gameObject.SetActive(true);
-    //    cityInfoScreen.GetCityInfo(theCity);
-    //}
-
-    //public void HideCityInfo()
-    //{
-    //    cityInfoScreen.gameObject.SetActive(false);
-    //}
-
-    //public void ShowCampaignInfo()
-    //{
-    //    campaignInfoScreen.gameObject.SetActive(true);
-    //    campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
-    //}
-
-    //public void HideCampaignInfo()
-    //{
-    //    campaignInfoScreen.gameObject.SetActive(false);
-    //}
-
-    //private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
-    //{
-    //    int posY = -40;
-
-    //    foreach (var building in buildingPrefabs)
-    //    {
-    //        Transform newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(0, posY), Quaternion.identity).GetComponent<Transform>();
-    //        newBuildingButton.SetParent(buildingsContainer, false);
-    //        newBuildingButton.GetComponent<BuildButton>().AssignBuildingToButton(building, slotBeingStoodIn);
-
-    //        posY -= 70;
-    //    }
-    //}
-
-    //private void FlushBuildingUI()
-    //{
-    //    foreach (Transform child in buildingsContainer)
-    //    {
-    //        Destroy(child.gameObject);
-    //    }
-    //}
 }
