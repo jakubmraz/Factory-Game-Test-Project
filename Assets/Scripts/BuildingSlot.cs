@@ -84,6 +84,7 @@ public class BuildingSlot : MonoBehaviour
             theGameSystem.money -= building.buildingCost;
             this.building = Instantiate(building, transform);
             theGameSystem.buildings.Add(building);
+            building.OnBuilt();
 
             hasBuilding = true;
             buildButton.gameObject.SetActive(false);

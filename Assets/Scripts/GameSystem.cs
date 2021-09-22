@@ -14,6 +14,7 @@ public class GameSystem : MonoBehaviour
     public int money;
 
     public int plasticWaste;
+    public int maxPlasticWaste;
     public int fleeceJackets;
 
     public List<Building> buildings;
@@ -49,6 +50,7 @@ public class GameSystem : MonoBehaviour
         buildings = new List<Building>();
 
         money = 500;
+        maxPlasticWaste = 10000;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
         gameSpeed = 1;
 
@@ -183,6 +185,16 @@ public class GameSystem : MonoBehaviour
         gamePaused = false;
         thePlayer.UnpausePlayer();
         theUI.SwitchPausePlayButtons();
+    }
+
+    public void RaisePlasticStorage(int value)
+    {
+        maxPlasticWaste += value;
+    }
+
+    public void ReducePlasticStorage(int value)
+    {
+        maxPlasticWaste -= value;
     }
 
     void CheckCampaignGoals()

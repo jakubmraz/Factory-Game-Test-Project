@@ -19,4 +19,14 @@ public class Building : MonoBehaviour
     {
 
     }
+
+    public virtual void OnBuilt()
+    {
+
+    }
+
+    public virtual void OnDestroyed()
+    {
+
+    }
 }

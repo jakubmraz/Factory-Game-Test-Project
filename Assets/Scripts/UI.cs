@@ -56,7 +56,7 @@ public class UI : MonoBehaviour
 
         cityInfoScreen.GetCityInfo(theCity);
 
-        plasticUI.text = "Plastic: " + theGameSystem.plasticWaste;
+        plasticUI.text = "Plastic: " + theGameSystem.plasticWaste + "/" + theGameSystem.maxPlasticWaste;
         fleeceJacketUI.text = "Fleece Jackets: " + theGameSystem.fleeceJackets;
         timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
         moneyUI.text = "Money: " + theGameSystem.money + "$";

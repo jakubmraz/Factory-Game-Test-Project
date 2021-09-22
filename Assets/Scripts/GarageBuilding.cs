@@ -8,8 +8,14 @@ public class GarageBuilding : Building
 
     public override void Produce(GameSystem theGameSystem, City theCity)
     {
-        theCity.TotalPlastic -= plasticProduced;
-        theGameSystem.plasticWaste += plasticProduced;
+        if (theGameSystem.plasticWaste < theGameSystem.maxPlasticWaste)
+        {
+            theCity.TotalPlastic -= plasticProduced;
+            theGameSystem.plasticWaste += plasticProduced;
+
+            if (theGameSystem.plasticWaste > theGameSystem.maxPlasticWaste)
+                theGameSystem.plasticWaste = theGameSystem.maxPlasticWaste;
+        }
 
         if (theCity.TotalPlastic < 0)
         {
