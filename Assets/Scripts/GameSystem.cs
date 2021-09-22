@@ -8,6 +8,7 @@ public class GameSystem : MonoBehaviour
 {
     private City theCity;
     public Campaign theCampaign;
+    private UI theUI;
 
     public int money;
 
@@ -18,20 +19,20 @@ public class GameSystem : MonoBehaviour
 
     public DateTime gameTime;
 
-    [SerializeField] private List<Building> buildingPrefabs;
+    //[SerializeField] private List<Building> buildingPrefabs;
 
-    [SerializeField] private Text plasticUI;
-    [SerializeField] private Text timeUI;
-    [SerializeField] private Text fleeceJacketUI;
-    [SerializeField] private Text moneyUI;
+    //[SerializeField] private Text plasticUI;
+    //[SerializeField] private Text timeUI;
+    //[SerializeField] private Text fleeceJacketUI;
+    //[SerializeField] private Text moneyUI;
 
-    [SerializeField] private RectTransform buildMenu;
-    [SerializeField] private Button buildingButtonPrefab;
-    [SerializeField] private RectTransform buildingsContainer;
+    //[SerializeField] private RectTransform buildMenu;
+    //[SerializeField] private Button buildingButtonPrefab;
+    //[SerializeField] private RectTransform buildingsContainer;
 
-    [SerializeField] private BuildingInfoScreen buildingInfoScreen;
-    [SerializeField] private CityInfoScreen cityInfoScreen;
-    [SerializeField] private CampaignInfoScreen campaignInfoScreen;
+    //[SerializeField] private BuildingInfoScreen buildingInfoScreen;
+    //[SerializeField] private CityInfoScreen cityInfoScreen;
+    //[SerializeField] private CampaignInfoScreen campaignInfoScreen;
 
     private bool monthlyTickHappened;
     private bool dailyTickHappened;
@@ -55,6 +56,7 @@ public class GameSystem : MonoBehaviour
             }
         };
 
+        theUI = GetComponent<UI>();
         theCity = GetComponent<City>();
         buildings = new List<Building>();
         money = 500;
@@ -123,21 +125,22 @@ public class GameSystem : MonoBehaviour
 
     void HourTick()
     {
+        theUI.UpdateUI();
         //plasticWaste++;
-        cityInfoScreen.GetCityInfo(theCity);
+        //cityInfoScreen.GetCityInfo(theCity);
 
-        plasticUI.text = "Plastic: " + plasticWaste;
-        fleeceJacketUI.text = "Fleece Jackets: " + fleeceJackets;
-        timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
-        moneyUI.text = "Money: " + money + "$";
+        //plasticUI.text = "Plastic: " + plasticWaste;
+        //fleeceJacketUI.text = "Fleece Jackets: " + fleeceJackets;
+        //timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
+        //moneyUI.text = "Money: " + money + "$";
     }
 
     void DailyTick()
     {
         theCity.Pollute();
         CheckCampaignGoals();
-        cityInfoScreen.GetCityInfo(theCity);
-        campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
+        //cityInfoScreen.GetCityInfo(theCity);
+        //campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
     }
 
     void MonthlyTick()
@@ -174,70 +177,70 @@ public class GameSystem : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public void ShowBuildngInfoScreen(Building building)
-    {
-        buildingInfoScreen.gameObject.SetActive(true);
-        buildingInfoScreen.GetBuildingInfo(building);
-    }
+    //public void ShowBuildngInfoScreen(Building building)
+    //{
+    //    buildingInfoScreen.gameObject.SetActive(true);
+    //    buildingInfoScreen.GetBuildingInfo(building);
+    //}
 
-    public void HideBuildingInfoScreen()
-    {
-        buildingInfoScreen.gameObject.SetActive(false);
-    }
+    //public void HideBuildingInfoScreen()
+    //{
+    //    buildingInfoScreen.gameObject.SetActive(false);
+    //}
 
-    public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
-    {
-        FillBuildingUI(slotBeingStoodIn);
-        buildMenu.gameObject.SetActive(true);
-    }
+    //public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
+    //{
+    //    FillBuildingUI(slotBeingStoodIn);
+    //    buildMenu.gameObject.SetActive(true);
+    //}
 
-    public void HideBuildMenu()
-    {
-        buildMenu.gameObject.SetActive(false);
-        FlushBuildingUI();
-    }
+    //public void HideBuildMenu()
+    //{
+    //    buildMenu.gameObject.SetActive(false);
+    //    FlushBuildingUI();
+    //}
 
-    public void ShowCityInfo()
-    {
-        cityInfoScreen.gameObject.SetActive(true);
-        cityInfoScreen.GetCityInfo(theCity);
-    }
+    //public void ShowCityInfo()
+    //{
+    //    cityInfoScreen.gameObject.SetActive(true);
+    //    cityInfoScreen.GetCityInfo(theCity);
+    //}
 
-    public void HideCityInfo()
-    {
-        cityInfoScreen.gameObject.SetActive(false);
-    }
+    //public void HideCityInfo()
+    //{
+    //    cityInfoScreen.gameObject.SetActive(false);
+    //}
 
-    public void ShowCampaignInfo()
-    {
-        campaignInfoScreen.gameObject.SetActive(true);
-        campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
-    }
+    //public void ShowCampaignInfo()
+    //{
+    //    campaignInfoScreen.gameObject.SetActive(true);
+    //    campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
+    //}
 
-    public void HideCampaignInfo()
-    {
-        campaignInfoScreen.gameObject.SetActive(false);
-    }
+    //public void HideCampaignInfo()
+    //{
+    //    campaignInfoScreen.gameObject.SetActive(false);
+    //}
 
-    private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
-    {
-        int posY = -40;
+    //private void FillBuildingUI(BuildingSlot slotBeingStoodIn)
+    //{
+    //    int posY = -40;
 
-        foreach (var building in buildingPrefabs)
-        {
-            Transform newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(0, posY), Quaternion.identity).GetComponent<Transform>();
-            newBuildingButton.SetParent(buildingsContainer, false);
-            newBuildingButton.GetComponent<BuildButton>().AssignBuildingToButton(building, slotBeingStoodIn);
+    //    foreach (var building in buildingPrefabs)
+    //    {
+    //        Transform newBuildingButton = Instantiate(buildingButtonPrefab, new Vector3(0, posY), Quaternion.identity).GetComponent<Transform>();
+    //        newBuildingButton.SetParent(buildingsContainer, false);
+    //        newBuildingButton.GetComponent<BuildButton>().AssignBuildingToButton(building, slotBeingStoodIn);
 
-            posY -= 70;
-        }
-    }
+    //        posY -= 70;
+    //    }
+    //}
 
-    private void FlushBuildingUI()
-    {
-        foreach (Transform child in buildingsContainer)
-        {
-            Destroy(child.gameObject);
-        }
-    }
+    //private void FlushBuildingUI()
+    //{
+    //    foreach (Transform child in buildingsContainer)
+    //    {
+    //        Destroy(child.gameObject);
+    //    }
+    //}
 }

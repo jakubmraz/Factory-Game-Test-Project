@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class BuildingSlot : MonoBehaviour
 {
+    private UI theUI;
     private GameSystem theGameSystem;
 
     [SerializeField] private Button buildButton;
@@ -22,7 +23,8 @@ public class BuildingSlot : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        theGameSystem = GameObject.FindObjectOfType<GameSystem>();
+        theUI = GameObject.FindObjectOfType<UI>();
+        theGameSystem = FindObjectOfType<GameSystem>();
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class BuildingSlot : MonoBehaviour
     {
         if (isPlayerInCollision)
         {
-            theGameSystem.ShowBuildMenu(this);
+            theUI.ShowBuildMenu(this);
         }
     }
 
@@ -43,7 +45,7 @@ public class BuildingSlot : MonoBehaviour
     {
         if (isPlayerInCollision)
         {
-            theGameSystem.ShowBuildngInfoScreen(building);
+            theUI.ShowBuildngInfoScreen(building);
         }
     }
 
@@ -70,8 +72,8 @@ public class BuildingSlot : MonoBehaviour
             infoButton.gameObject.SetActive(false);
             isPlayerInCollision = false;
 
-            theGameSystem.HideBuildMenu();
-            theGameSystem.HideBuildingInfoScreen();
+            theUI.HideBuildMenu();
+            theUI.HideBuildingInfoScreen();
         }
     }
 
@@ -85,7 +87,7 @@ public class BuildingSlot : MonoBehaviour
 
             hasBuilding = true;
             buildButton.gameObject.SetActive(false);
-            theGameSystem.HideBuildMenu();
+            theUI.HideBuildMenu();
         }
     }
 }
