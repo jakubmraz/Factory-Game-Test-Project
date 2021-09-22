@@ -14,4 +14,9 @@ public class Building : MonoBehaviour
     public int materialConsumedAmount;
 
     public string productProduced;
+
+    public virtual void Produce(GameSystem theGameSystem, City theCity)
+    {
+
+    }
 }

@@ -4,24 +4,12 @@ using UnityEngine;
 
 public class SellingBuilding : Building
 {
-    private GameSystem theGameSystem;
-
-    void Awake()
+    public override void Produce(GameSystem theGameSystem, City theCity)
     {
-        theGameSystem = GameObject.FindObjectOfType<GameSystem>();
-        StartCoroutine(SellFleeceJackets());
-    }
-
-    IEnumerator SellFleeceJackets()
-    {
-        while (true)
+        if (theGameSystem.fleeceJackets >= 1)
         {
-            if (theGameSystem.fleeceJackets >= 1)
-            {
-                theGameSystem.fleeceJackets--;
-                theGameSystem.money += 5;
-            }
-            yield return new WaitForSeconds(5f);
+            theGameSystem.fleeceJackets--;
+            theGameSystem.money += 5;
         }
     }
 }

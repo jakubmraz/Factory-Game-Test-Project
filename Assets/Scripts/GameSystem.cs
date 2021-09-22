@@ -134,6 +134,10 @@ public class GameSystem : MonoBehaviour
 
     void HourTick()
     {
+        foreach (var building in buildings)
+        {
+            building.Produce(this, theCity);
+        }
         theUI.UpdateUI();
     }
 

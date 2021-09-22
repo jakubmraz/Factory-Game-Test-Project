@@ -4,25 +4,12 @@ using UnityEngine;
 
 public class PlasticPlant : Building
 {
-    private GameSystem theGameSystem;
-
-    void Awake()
+    public override void Produce(GameSystem theGameSystem, City theCity)
     {
-        theGameSystem = GameObject.FindObjectOfType<GameSystem>();
-        StartCoroutine(ProduceFleeceJackets());
-    }
-
-    IEnumerator ProduceFleeceJackets()
-    {
-        while (true)
+        if (theGameSystem.plasticWaste >= 10)
         {
-            if (theGameSystem.plasticWaste >= 10)
-            {
-                theGameSystem.plasticWaste -= 10;
-                theGameSystem.fleeceJackets++;
-            }
-            yield return new WaitForSeconds(5f);
+            theGameSystem.plasticWaste -= 10;
+            theGameSystem.fleeceJackets++;
         }
-        
     }
 }
