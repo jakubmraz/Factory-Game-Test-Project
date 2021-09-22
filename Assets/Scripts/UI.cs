@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,7 @@ public class UI : MonoBehaviour
     [SerializeField] private BuildingInfoScreen buildingInfoScreen;
     [SerializeField] private CityInfoScreen cityInfoScreen;
     [SerializeField] private CampaignInfoScreen campaignInfoScreen;
+    [SerializeField] private GoalCompletedPopup goalCompletedPopup;
 
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button playButton;
@@ -33,6 +35,9 @@ public class UI : MonoBehaviour
     [SerializeField] private Sprite speed1Sprite;
     [SerializeField] private Sprite speed2Sprite;
     [SerializeField] private Sprite speed3Sprite;
+
+    [SerializeField] private Transform victoryScreen;
+    [SerializeField] private TextMeshProUGUI victoryDescription;
 
     void Awake()
     {
@@ -148,6 +153,24 @@ public class UI : MonoBehaviour
     public void HideCampaignInfo()
     {
         campaignInfoScreen.gameObject.SetActive(false);
+    }
+
+    public void ShowGoalCompletedWindow(Goal goal)
+    {
+        goalCompletedPopup.gameObject.SetActive(true);
+        goalCompletedPopup.FillGoalInfo(goal);
+    }
+
+    public void HideGoalCompletedWindow()
+    {
+        goalCompletedPopup.gameObject.SetActive(false);
+    }
+
+    public void ShowVictoryScreen(City city)
+    {
+        victoryScreen.gameObject.SetActive(true);
+        victoryDescription.text = "Thanks to you, the city of " + city.Name +
+                                  " is now cleansed of pollution and can ascend into a new era of eco friendliness and prosperity.";
     }
 
     private void FillBuildingUI(BuildingSlot slotBeingStoodIn)

@@ -12,16 +12,24 @@ public class Goal : MonoBehaviour
 
     //public int? jacketsSoldGoal;
 
+    public bool completed;
+
     public string rewardType;
     public int rewardValue;
 
     public bool CheckGoalCompletion(City city)
     {
-        if(pollutionGoal == null || city.TotalPollutionPercentage() <= pollutionGoal)
-            if(plasticGoal == null || city.TotalPlastic <= plasticGoal)
-                if(ecoAwarenessGoal == null || city.EcoAwareness >= ecoAwarenessGoal)
-                    //if (jacketsSoldGoal == null || jacketsSold >= jacketsSoldGoal)
+        if(!completed)
+        {
+            if (pollutionGoal == null || city.TotalPollutionPercentage() <= pollutionGoal)
+                if (plasticGoal == null || city.TotalPlastic <= plasticGoal)
+                    if (ecoAwarenessGoal == null || city.EcoAwareness >= ecoAwarenessGoal)
+                        //if (jacketsSoldGoal == null || jacketsSold >= jacketsSoldGoal)
+                    {
+                        completed = true;
                         return true;
+                    }
+        }
 
         return false;
     }

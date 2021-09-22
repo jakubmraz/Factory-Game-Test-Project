@@ -191,6 +191,7 @@ public class GameSystem : MonoBehaviour
         {
             if (sideGoal.CheckGoalCompletion(theCity))
             {
+                theUI.ShowGoalCompletedWindow(sideGoal);
                 switch (sideGoal.rewardType)
                 {
                     case "Money":
@@ -208,6 +209,7 @@ public class GameSystem : MonoBehaviour
 
     private void Win()
     {
-        throw new NotImplementedException();
+        PauseGame();
+        theUI.ShowVictoryScreen(theCity);
     }
 }

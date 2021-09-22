@@ -53,7 +53,8 @@ MonoBehaviour:
   buildingIcon: {fileID: 21300000, guid: 260d2dffe8465b54080d7c16354b639e, type: 3}
   materialConsumed: Nothing
   materialConsumedAmount: 0
-  productProduced: Plastic Delivery (50)
+  productProduced: Plastic Delivery (500)
+  plasticProduced: 500
 --- !u!1 &2802720321848604806
 GameObject:
   m_ObjectHideFlags: 0

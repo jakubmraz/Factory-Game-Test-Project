@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlasticPlant : Building
 {
+    public int plasticConsumed;
+
     public override void Produce(GameSystem theGameSystem, City theCity)
     {
-        if (theGameSystem.plasticWaste >= 10)
+        if (theGameSystem.plasticWaste >= plasticConsumed)
         {
-            theGameSystem.plasticWaste -= 10;
+            theGameSystem.plasticWaste -= plasticConsumed;
             theGameSystem.fleeceJackets++;
         }
     }

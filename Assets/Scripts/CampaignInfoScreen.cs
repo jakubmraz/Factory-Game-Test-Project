@@ -8,9 +8,11 @@ public class CampaignInfoScreen : MonoBehaviour
     [SerializeField] private TextMeshProUGUI campaignTimeLimit;
     [SerializeField] private TextMeshProUGUI campaignTimeRemaining;
     [SerializeField] private GameObject sideGoal1;
+    [SerializeField] private TextMeshProUGUI sideGoal1Completed;
     [SerializeField] private TextMeshProUGUI sideGoal1Value;
     [SerializeField] private TextMeshProUGUI sideGoal1Reward;
     [SerializeField] private GameObject sideGoal2;
+    [SerializeField] private TextMeshProUGUI sideGoal2Completed;
     [SerializeField] private TextMeshProUGUI sideGoal2Value;
     [SerializeField] private TextMeshProUGUI sideGoal2Reward;
 
@@ -25,6 +27,8 @@ public class CampaignInfoScreen : MonoBehaviour
         {
             sideGoal1Value.text = campaign.SideGoals[0].GetGoalString();
             sideGoal1Reward.text = campaign.SideGoals[0].rewardValue + " " + campaign.SideGoals[0].rewardType;
+            if(campaign.SideGoals[0].completed)
+                sideGoal1Completed.gameObject.SetActive(true);
         }
         else
         {
@@ -36,6 +40,8 @@ public class CampaignInfoScreen : MonoBehaviour
             Debug.Log(campaign.SideGoals.Count);
             sideGoal2Value.text = campaign.SideGoals[1].GetGoalString();
             sideGoal2Reward.text = campaign.SideGoals[1].rewardValue + " " + campaign.SideGoals[1].rewardType;
+            if (campaign.SideGoals[1].completed)
+                sideGoal2Completed.gameObject.SetActive(true);
         }
         else
         {
