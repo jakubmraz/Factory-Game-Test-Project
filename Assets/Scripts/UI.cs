@@ -28,6 +28,7 @@ public class UI : MonoBehaviour
     [SerializeField] private CityInfoScreen cityInfoScreen;
     [SerializeField] private CampaignInfoScreen campaignInfoScreen;
     [SerializeField] private GoalCompletedPopup goalCompletedPopup;
+    [SerializeField] private EconomyScreen economyScreen;
 
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button playButton;
@@ -54,14 +55,13 @@ public class UI : MonoBehaviour
         theGameSystem = GetComponent<GameSystem>();
         gameTime = theGameSystem.gameTime;
 
-        cityInfoScreen.GetCityInfo(theCity);
-
         plasticUI.text = "Plastic: " + theGameSystem.plasticWaste + "/" + theGameSystem.maxPlasticWaste;
         fleeceJacketUI.text = "Fleece Jackets: " + theGameSystem.fleeceJackets;
         timeUI.text = gameTime.ToShortDateString() + " " + gameTime.ToShortTimeString();
         moneyUI.text = "Money: " + theGameSystem.money + "$";
         cityInfoScreen.GetCityInfo(theCity);
         campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
+        economyScreen.GetEconomyInfo(theGameSystem);
     }
 
     public void SwitchPausePlayButtons()
@@ -96,9 +96,7 @@ public class UI : MonoBehaviour
 
     public void ShowBuildngInfoScreen(Building building)
     {
-        HideBuildMenu();
-        HideCampaignInfo();
-        HideCityInfo();
+        HideAll();
 
         buildingInfoScreen.gameObject.SetActive(true);
         buildingInfoScreen.GetBuildingInfo(building);
@@ -111,9 +109,7 @@ public class UI : MonoBehaviour
 
     public void ShowBuildMenu(BuildingSlot slotBeingStoodIn)
     {
-        HideCityInfo();
-        HideCampaignInfo();
-        HideBuildingInfoScreen();
+        HideAll();
 
         FillBuildingUI(slotBeingStoodIn);
         buildMenu.gameObject.SetActive(true);
@@ -127,9 +123,7 @@ public class UI : MonoBehaviour
 
     public void ShowCityInfo()
     {
-        HideBuildMenu();
-        HideBuildingInfoScreen();
-        HideCampaignInfo();
+        HideAll();
 
         cityInfoScreen.gameObject.SetActive(true);
         cityInfoScreen.GetCityInfo(theCity);
@@ -142,9 +136,7 @@ public class UI : MonoBehaviour
 
     public void ShowCampaignInfo()
     {
-        HideBuildMenu();
-        HideBuildingInfoScreen();
-        HideCityInfo();
+        HideAll();
 
         campaignInfoScreen.gameObject.SetActive(true);
         campaignInfoScreen.GetCampaignInfo(theCampaign, gameTime);
@@ -153,6 +145,19 @@ public class UI : MonoBehaviour
     public void HideCampaignInfo()
     {
         campaignInfoScreen.gameObject.SetActive(false);
+    }
+
+    public void ShowEconomyScreen()
+    {
+        HideAll();
+
+        economyScreen.gameObject.SetActive(true);
+        economyScreen.GetEconomyInfo(theGameSystem);
+    }
+
+    public void HideEconomyScreen()
+    {
+        economyScreen.gameObject.SetActive(false);
     }
 
     public void ShowGoalCompletedWindow(Goal goal)
@@ -193,5 +198,14 @@ public class UI : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private void HideAll()
+    {
+        HideBuildingInfoScreen();
+        HideBuildMenu();
+        HideCampaignInfo();
+        HideCityInfo();
+        HideEconomyScreen();
     }
 }

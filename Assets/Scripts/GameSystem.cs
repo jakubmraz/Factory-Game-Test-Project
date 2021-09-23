@@ -154,6 +154,8 @@ public class GameSystem : MonoBehaviour
         foreach (var building in buildings)
         {
             money -= building.monthlyUpkeep;
+            if(building is SellingBuilding sellingBuilding)
+                sellingBuilding.FlushMonthlyEarnings();
         }
     }
 
