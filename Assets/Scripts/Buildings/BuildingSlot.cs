@@ -51,16 +51,28 @@ public class BuildingSlot : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !hasBuilding)
+        if (other.CompareTag("Player") && !hasBuilding)
         {
             buildButton.gameObject.SetActive(true);
             isPlayerInCollision = true;
         }
 
-        if (other.tag == "Player" && hasBuilding)
+        if (other.CompareTag("Player") && hasBuilding)
         {
             infoButton.gameObject.SetActive(true);
             isPlayerInCollision = true;
+        }
+
+        if (other.CompareTag("Svyetlana"))
+        {
+            Svyetlana svyetlana = other.GetComponent<Svyetlana>();
+            if (!svyetlana.headingBack && this.building == svyetlana.targetBuilding)
+            {
+                building.OnSvyetlanaArrived();
+                svyetlana.GoBack();
+            }
+            if(svyetlana.headingBack && this.building == svyetlana.parentBuilding)
+                svyetlana.FinishDutyAndDie();
         }
     }
 
@@ -83,7 +95,7 @@ public class BuildingSlot : MonoBehaviour
         {
             theGameSystem.money -= building.buildingCost;
             this.building = Instantiate(building, transform);
-            theGameSystem.buildings.Add(building);
+            theGameSystem.buildings.Add(this.building);
             building.OnBuilt();
 
             hasBuilding = true;

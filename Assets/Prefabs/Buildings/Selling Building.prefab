@@ -135,6 +135,9 @@ MonoBehaviour:
   materialConsumed: Fleece Jacket
   materialConsumedAmount: 1
   productProduced: 5$
+  SvyetlanaPrefab: {fileID: -5177669205336426952, guid: 922bc6000e0a5164389f2cb753df0021,
+    type: 3}
+  moneyProducedLastMonth: 0
 --- !u!1 &2802720321848604806
 GameObject:
   m_ObjectHideFlags: 0

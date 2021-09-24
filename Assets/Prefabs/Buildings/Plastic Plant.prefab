@@ -214,6 +214,10 @@ MonoBehaviour:
   materialConsumed: Plastic
   materialConsumedAmount: 300
   productProduced: Fleece Jacket
+  SvyetlanaPrefab: {fileID: -5177669205336426952, guid: 922bc6000e0a5164389f2cb753df0021,
+    type: 3}
+  maxSvyetlanas: 5
+  deployedSvyetlanas: 0
   plasticConsumed: 300
 --- !u!1 &6012127800451012469
 GameObject:

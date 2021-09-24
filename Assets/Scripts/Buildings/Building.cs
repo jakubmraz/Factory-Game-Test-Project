@@ -15,9 +15,19 @@ public class Building : MonoBehaviour
 
     public string productProduced;
 
-    public virtual void Produce(GameSystem theGameSystem, City theCity)
-    {
+    public Svyetlana SvyetlanaPrefab;
+    public int maxSvyetlanas = 5;
+    public int deployedSvyetlanas = 0;
 
+    protected GameSystem theGameSystem;
+    protected City theCity;
+
+    public virtual void Produce(GameSystem gameSystem, City city)
+    {
+        theGameSystem = gameSystem;
+        theCity = city;
+        if (deployedSvyetlanas < maxSvyetlanas)
+            DeploySvyetlana();
     }
 
     public virtual void OnBuilt()
@@ -26,6 +36,26 @@ public class Building : MonoBehaviour
     }
 
     public virtual void OnDestroyed()
+    {
+
+    }
+
+    public virtual void DeploySvyetlana()
+    {
+
+    }
+
+    public virtual void OnSvyetlanaReturned()
+    {
+
+    }
+
+    public virtual void OnSvyetlanaArrived()
+    {
+
+    }
+
+    public virtual void FinishProduction()
     {
 
     }

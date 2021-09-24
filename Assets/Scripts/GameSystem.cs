@@ -49,7 +49,7 @@ public class GameSystem : MonoBehaviour
         theCity = GetComponent<City>();
         buildings = new List<Building>();
 
-        money = 500;
+        money = 600;
         maxPlasticWaste = 10000;
         gameTime = new DateTime(2019, 09, 28, 12, 00, 00);
         gameSpeed = 1;
