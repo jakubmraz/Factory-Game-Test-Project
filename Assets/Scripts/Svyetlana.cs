@@ -10,48 +10,44 @@ public class Svyetlana : MonoBehaviour
     public Building parentBuilding;
     public bool headingBack;
 
-    public void FindTargetBuilding(string targetBuildingType)
+    private GameSystem theGameSystem;
+    public int howMuchToCarry;
+    private bool wasSuccessful;
+
+    public void InitializeSvyetlana(string targetResource, int amount, Building parentBuilding)
     {
-        GameSystem theGameSystem = FindObjectOfType<GameSystem>();
-        switch (targetBuildingType)
+        theGameSystem = FindObjectOfType<GameSystem>();
+        this.parentBuilding = parentBuilding;
+        this.howMuchToCarry = amount;
+
+        if (targetBuilding == null)
         {
-            case "Sweatshop":
-                List<PlasticPlant> sweatshops = new List<PlasticPlant>();
-                foreach (var building in theGameSystem.buildings)
-                {
-                    if (building is PlasticPlant sweatshop)
-                    {
-                        sweatshops.Add(sweatshop);
-                    }
-                }
-                targetBuilding = sweatshops.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
-                    .FirstOrDefault();
+            FindTargetBuilding(targetResource);
+        }
+    }
+
+    private void FindTargetBuilding(string targetResource)
+    {
+        switch (targetResource)
+        {
+            case "Fleece Jacket":
+                targetBuilding = FindNearestSweatshop();
                 break;
 
-            case "Plastic Container":
-                List<PlasticContainerBuilding> plasticContainers = new List<PlasticContainerBuilding>();
-                foreach (var building in theGameSystem.buildings)
+            case "Plastic":
+                if (parentBuilding.GetType() == typeof(PlasticPlant))
                 {
-                    if (building is PlasticContainerBuilding container)
+                    targetBuilding = FindNearestPlasticContainer();
+                    if (targetBuilding == null)
                     {
-                        plasticContainers.Add(container);
+                        targetBuilding = FindNearestGarage();
                     }
                 }
-                targetBuilding = plasticContainers.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
-                    .FirstOrDefault();
-                break;
 
-            case "Garage":
-                List<GarageBuilding> garages = new List<GarageBuilding>();
-                foreach (var building in theGameSystem.buildings)
+                if (parentBuilding.GetType() == typeof(PlasticContainerBuilding))
                 {
-                    if (building is GarageBuilding garage)
-                    {
-                        garages.Add(garage);
-                    }
+                    targetBuilding = FindNearestGarage();
                 }
-                targetBuilding = garages.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
-                    .FirstOrDefault();
                 break;
         }
 
@@ -66,14 +62,15 @@ public class Svyetlana : MonoBehaviour
         }
     }
 
-    public void GoToTargetBuilding()
+    private void GoToTargetBuilding()
     {
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.SetDestination(targetBuilding.transform.position);
     }
 
-    public void GoBack()
+    public void GoBack(bool successful)
     {
+        wasSuccessful = successful;
         headingBack = true;
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.SetDestination(parentBuilding.transform.position);
@@ -81,7 +78,55 @@ public class Svyetlana : MonoBehaviour
 
     public void FinishDutyAndDie()
     {
-        parentBuilding.FinishProduction();
+        parentBuilding.FinishProduction(wasSuccessful);
         Destroy(gameObject);
+    }
+
+    private PlasticPlant FindNearestSweatshop()
+    {
+        List<PlasticPlant> sweatshops = new List<PlasticPlant>();
+        foreach (var building in theGameSystem.buildings)
+        {
+            if (building is PlasticPlant sweatshop)
+            {
+                if(sweatshop.currentStorage >= howMuchToCarry)
+                    sweatshops.Add(sweatshop);
+            }
+        }
+
+        return sweatshops.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
+            .FirstOrDefault();
+    }
+
+    private PlasticContainerBuilding FindNearestPlasticContainer()
+    {
+        List<PlasticContainerBuilding> plasticContainers = new List<PlasticContainerBuilding>();
+        foreach (var building in theGameSystem.buildings)
+        {
+            if (building is PlasticContainerBuilding container)
+            {
+                if(container.currentStorage >= howMuchToCarry)
+                    plasticContainers.Add(container);
+            }
+        }
+
+        return plasticContainers.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
+            .FirstOrDefault();
+    }
+
+    private GarageBuilding FindNearestGarage()
+    {
+        List<GarageBuilding> garages = new List<GarageBuilding>();
+        foreach (var building in theGameSystem.buildings)
+        {
+            if (building is GarageBuilding garage)
+            {
+                if(garage.currentStorage >= howMuchToCarry)
+                    garages.Add(garage);
+            }
+        }
+
+        return garages.OrderBy(t => (t.transform.position - this.transform.position).sqrMagnitude)
+            .FirstOrDefault();
     }
 }

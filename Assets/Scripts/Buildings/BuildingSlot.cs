@@ -68,8 +68,8 @@ public class BuildingSlot : MonoBehaviour
             Svyetlana svyetlana = other.GetComponent<Svyetlana>();
             if (!svyetlana.headingBack && this.building == svyetlana.targetBuilding)
             {
-                building.OnSvyetlanaArrived();
-                svyetlana.GoBack();
+                bool success = building.OnSvyetlanaArrived(svyetlana);
+                svyetlana.GoBack(success);
             }
             if(svyetlana.headingBack && this.building == svyetlana.parentBuilding)
                 svyetlana.FinishDutyAndDie();

@@ -81,7 +81,7 @@ MonoBehaviour:
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
+  m_DynamicPixelsPerUnit: 0
 --- !u!114 &8117123781162609784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,16 +229,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingName: Plastic Container
-  buildingCost: 150
+  buildingCost: 50
   monthlyUpkeep: 10
   buildingIcon: {fileID: 21300000, guid: 2539a15f472b92441b4531bdd9884b19, type: 3}
-  materialConsumed: Nothing
-  materialConsumedAmount: 0
-  productProduced: Extra 5000 Plastic Storage
+  materialConsumed: Plastic
+  materialConsumedAmount: 500
+  productProduced: 
   SvyetlanaPrefab: {fileID: -5177669205336426952, guid: 922bc6000e0a5164389f2cb753df0021,
     type: 3}
   maxSvyetlanas: 5
   deployedSvyetlanas: 0
+  plasticDeliverySize: 500
   maxStorage: 5000
   currentStorage: 0
   storageTooltip: {fileID: 2191602282287894094}

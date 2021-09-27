@@ -50,12 +50,12 @@ public class Building : MonoBehaviour
 
     }
 
-    public virtual void OnSvyetlanaArrived()
+    public virtual bool OnSvyetlanaArrived(Svyetlana svyetlana)
     {
-
+        return true;
     }
 
-    public virtual void FinishProduction()
+    public virtual void FinishProduction(bool wasSvyetlanaSuccessful)
     {
 
     }
